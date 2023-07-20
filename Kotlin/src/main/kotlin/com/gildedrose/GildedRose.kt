@@ -9,11 +9,10 @@ class GildedRose(var items: List<Item>) {
     fun updateQuality() {
         for (i in items.indices) {
             val currentItem = items[i]
+
             if (currentItem.name != AGED_BRIE_NAME && currentItem.name != TTICKET_NAME) {
-                if (currentItem.quality > 0) {
-                    if (currentItem.name != SULFURAS_NAME) {
-                        currentItem.quality = currentItem.quality - 1
-                    }
+                if (currentItem.quality > 0 && currentItem.name != SULFURAS_NAME) {
+                    currentItem.quality = currentItem.quality - 1
                 }
             } else {
                 if (currentItem.quality < 50) {
