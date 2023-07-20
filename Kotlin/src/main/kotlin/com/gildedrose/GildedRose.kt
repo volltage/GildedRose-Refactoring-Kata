@@ -12,38 +12,30 @@ class GildedRose(var items: List<Item>) {
 
             val itsAgedBrie = currentItem.name == AGED_BRIE_NAME
             val itsTicket = currentItem.name == TTICKET_NAME
-            val itsSulfuras = currentItem.name != SULFURAS_NAME
-            if (!itsAgedBrie && !itsTicket && currentItem.quality > 0 && itsSulfuras) {
-                currentItem.quality = currentItem.quality - 1
-            } else {
+            val itsNotSulfuras = currentItem.name != SULFURAS_NAME
+            currentItem.sellIn = if (itsNotSulfuras) currentItem.sellIn - 1 else return
+
+            if (itsAgedBrie || itsTicket || currentItem.quality <= 0) {
                 if (currentItem.quality < 50) {
                     currentItem.quality = currentItem.quality + 1
-
-                    if (currentItem.name == TTICKET_NAME && currentItem.quality < 50) {
-                        if (currentItem.sellIn < 6) {
-                            currentItem.quality = currentItem.quality + 1
-                        }
-                        if (currentItem.sellIn < 11) {
-                            currentItem.quality = currentItem.quality + 1
-                        }
+                    if (itsTicket && currentItem.quality < 50 && currentItem.sellIn < 5) {
+                        currentItem.quality = currentItem.quality + 1
+                    }
+                    if (itsTicket && currentItem.quality < 50 && currentItem.sellIn < 10) {
+                        currentItem.quality = currentItem.quality + 1
                     }
                 }
+            } else {
+                currentItem.quality = currentItem.quality - 1
             }
 
-            if (itsSulfuras) {
-                currentItem.sellIn = currentItem.sellIn - 1
-            }
+            if (currentItem.sellIn < 0 && itsAgedBrie && currentItem.quality < 50) currentItem.quality =
+                currentItem.quality + 1
+            else if (currentItem.sellIn < 0 && itsTicket) currentItem.quality = 0
+            else if (currentItem.sellIn < 0 && currentItem.quality > 0) currentItem.quality =
+                currentItem.quality - 1
 
-            if (currentItem.sellIn < 0) {
-                currentItem.quality = when {
-                    itsAgedBrie && currentItem.quality < 50 -> currentItem.quality + 1
-                    itsTicket -> 0
-                    currentItem.quality > 0 && itsSulfuras -> currentItem.quality - 1
-                    else -> {
-                        return
-                    }
-                }
-            }
+
         }
     }
 
