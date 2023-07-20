@@ -36,8 +36,8 @@ class GildedRose(var items: List<Item>) {
 
             if (currentItem.sellIn < 0) {
                 currentItem.quality = when {
-                    currentItem.name == AGED_BRIE_NAME && currentItem.quality < 50 -> currentItem.quality + 1
-                    currentItem.name == TTICKET_NAME -> 0
+                    itsAgedBrie && currentItem.quality < 50 -> currentItem.quality + 1
+                    itsTicket -> 0
                     currentItem.quality > 0 && itsSulfuras -> currentItem.quality - 1
                     else -> {
                         return
