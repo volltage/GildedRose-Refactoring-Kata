@@ -10,25 +10,18 @@ class GildedRose(var items: List<Item>) {
         for (i in items.indices) {
             val currentItem = items[i]
 
-            if (currentItem.name != AGED_BRIE_NAME && currentItem.name != TTICKET_NAME) {
-                if (currentItem.quality > 0 && currentItem.name != SULFURAS_NAME) {
-                    currentItem.quality = currentItem.quality - 1
-                }
+            if (currentItem.name != AGED_BRIE_NAME && currentItem.name != TTICKET_NAME && currentItem.quality > 0 && currentItem.name != SULFURAS_NAME) {
+                currentItem.quality = currentItem.quality - 1
             } else {
                 if (currentItem.quality < 50) {
                     currentItem.quality = currentItem.quality + 1
 
-                    if (currentItem.name == TTICKET_NAME) {
-                        if (currentItem.sellIn < 11) {
-                            if (currentItem.quality < 50) {
-                                currentItem.quality = currentItem.quality + 1
-                            }
-                        }
-
+                    if (currentItem.name == TTICKET_NAME && currentItem.quality < 50) {
                         if (currentItem.sellIn < 6) {
-                            if (currentItem.quality < 50) {
-                                currentItem.quality = currentItem.quality + 1
-                            }
+                            currentItem.quality = currentItem.quality + 1
+                        }
+                        if (currentItem.sellIn < 11) {
+                            currentItem.quality = currentItem.quality + 1
                         }
                     }
                 }
