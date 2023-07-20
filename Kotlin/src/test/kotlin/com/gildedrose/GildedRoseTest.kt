@@ -66,7 +66,7 @@ internal class GildedRoseTest {
         app.updateQuality()
 
         val foundItem = app.items.find { it.name == "Aged Brie" }!!
-        assertEquals(8, foundItem.quality)
+        assertEquals(5, foundItem.quality)
     }
 
     @Test
@@ -79,10 +79,11 @@ internal class GildedRoseTest {
         app.updateQuality()
         app.updateQuality()
         app.updateQuality()
+        app.updateQuality()
 
         val foundItem = app.items.find { it.name == "Aged Brie" }!!
         assertEquals(50, foundItem.quality)
-        assertEquals(50, foundItem.sellIn)
+        assertEquals(5, foundItem.sellIn)
     }
 
     @Test
