@@ -40,26 +40,20 @@ class GildedRose(var items: List<Item>) {
             }
 
             if (currentItem.sellIn < 0) {
-                updateQualityAfterSellInBelow0(currentItem)
-            }
-        }
-    }
-
-    private fun updateQualityAfterSellInBelow0(item: Item) {
-        if (item.name != AGED_BRIE_NAME) {
-            if (item.name != TTICKET_NAME) {
-                if (item.quality > 0 && item.name != SULFURAS_NAME) {
-                    item.quality = item.quality - 1
+                currentItem.quality = when {
+                    currentItem.name == AGED_BRIE_NAME && currentItem.quality < 50 -> currentItem.quality + 1
+                    currentItem.name == TTICKET_NAME -> 0
+                    currentItem.quality > 0 && currentItem.name != SULFURAS_NAME -> currentItem.quality - 1
+                    else -> {
+                        return
+                    }
                 }
-            } else {
-                item.quality = 0
-            }
-        } else {
-            if (item.quality < 50) {
-                item.quality = item.quality + 1
             }
         }
     }
 
 }
+
+
+
 
