@@ -3,6 +3,7 @@ package com.gildedrose
 private const val TTICKET_NAME = "Backstage passes to a TAFKAL80ETC concert"
 private const val SULFURAS_NAME = "Sulfuras, Hand of Ragnaros"
 private const val AGED_BRIE_NAME = "Aged Brie"
+private const val CONJURED = "Conjured"
 
 class GildedRose(var items: List<Item>) {
 
@@ -13,25 +14,32 @@ class GildedRose(var items: List<Item>) {
             val itsAgedBrie = currentItem.name == AGED_BRIE_NAME
             val itsTicket = currentItem.name == TTICKET_NAME
             val itsNotSulfuras = currentItem.name != SULFURAS_NAME
+            val itsConjured = currentItem.name.contains(CONJURED)
             currentItem.sellIn = if (itsNotSulfuras) currentItem.sellIn - 1 else return
 
-            if (itsTicket) {
-                updateTicket(currentItem)
-            } else if (itsAgedBrie) {
-                updateAgedBrie(currentItem)
-            } else {
-                updateCommonItems(currentItem)
+            when {
+                itsTicket -> updateTicket(currentItem)
+                itsAgedBrie -> updateAgedBrie(currentItem)
+                itsConjured -> updateConjuredItem(currentItem)
+                else -> updateCommonItem(currentItem)
             }
         }
 
     }
 
-    private fun updateCommonItems(currentItem: Item) {
+    private fun updateConjuredItem(currentItem: Item) {
         if (currentItem.quality > 0 && currentItem.sellIn < 0) {
-            currentItem.quality--
-            currentItem.quality--
+            currentItem.quality -= 4
         } else if (currentItem.quality > 0) {
-            currentItem.quality--
+            currentItem.quality -= 2
+        }
+    }
+
+    private fun updateCommonItem(currentItem: Item) {
+        if (currentItem.quality > 0 && currentItem.sellIn < 0) {
+            currentItem.quality -= 2
+        } else if (currentItem.quality > 0) {
+            currentItem.quality -= 1
         }
     }
 
