@@ -16,37 +16,45 @@ class GildedRose(var items: List<Item>) {
             currentItem.sellIn = if (itsNotSulfuras) currentItem.sellIn - 1 else return
 
             if (itsTicket) {
-                if (currentItem.sellIn < 0) {
-                    currentItem.quality = 0
-                } else if (currentItem.quality < 50) {
-                    currentItem.quality++
-                    if (currentItem.quality < 50 && currentItem.sellIn < 5) {
-                        currentItem.quality++
-                    }
-                    if (currentItem.quality < 50 && currentItem.sellIn < 10) {
-                        currentItem.quality++
-                    }
-                }
-            } else if (itsAgedBrie && currentItem.quality < 50) {
-                currentItem.quality++
-                if (currentItem.sellIn < 0) {
-                    currentItem.quality++
-                }
-            } else if (currentItem.quality <= 0) {
-                currentItem.quality++
+                updateTicket(currentItem)
+            } else if (itsAgedBrie) {
+                updateAgedBrie(currentItem)
             } else {
-                currentItem.quality--
+                updateCommonItems(currentItem)
             }
+        }
 
-            if (currentItem.sellIn < 0 && currentItem.quality > 0) {
-                currentItem.quality--
-            }
+    }
 
+    private fun updateCommonItems(currentItem: Item) {
+        if (currentItem.quality > 0 && currentItem.sellIn < 0) {
+            currentItem.quality--
+            currentItem.quality--
+        } else if (currentItem.quality > 0) {
+            currentItem.quality--
         }
     }
 
+    private fun updateAgedBrie(currentItem: Item) {
+        if (currentItem.quality < 50 && currentItem.sellIn < 0) {
+            currentItem.quality++
+            currentItem.quality++
+        } else if (currentItem.quality < 50) {
+            currentItem.quality++
+        }
+    }
 }
 
-
-
-
+private fun updateTicket(currentItem: Item) {
+    if (currentItem.sellIn < 0) {
+        currentItem.quality = 0
+    } else if (currentItem.quality < 50) {
+        currentItem.quality++
+        if (currentItem.quality < 50 && currentItem.sellIn < 5) {
+            currentItem.quality++
+        }
+        if (currentItem.quality < 50 && currentItem.sellIn < 10) {
+            currentItem.quality++
+        }
+    }
+}
